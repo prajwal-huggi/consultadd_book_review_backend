@@ -1,4 +1,4 @@
-package com.example.consultadd_mini_project.service;
+package com.example.consultadd_mini_project.service.userService;
 
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.Repository.UserRepo;

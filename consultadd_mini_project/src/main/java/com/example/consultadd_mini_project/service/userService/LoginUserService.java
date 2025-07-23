@@ -1,9 +1,10 @@
-package com.example.consultadd_mini_project.service;
+package com.example.consultadd_mini_project.service.userService;
 
 import com.example.consultadd_mini_project.DTO.LoginResponseDTO;
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.Repository.UserRepo;
 import com.example.consultadd_mini_project.model.User;
+import com.example.consultadd_mini_project.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

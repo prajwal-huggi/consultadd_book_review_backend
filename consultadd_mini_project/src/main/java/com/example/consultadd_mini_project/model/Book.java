@@ -3,7 +3,9 @@ package com.example.consultadd_mini_project.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -31,8 +33,15 @@ public class Book {
     @Column(name="book_publication_year")
     private Integer publicationYear;
 
+    @Lob
     @Column(name="book_cover_image_url")
-    private String coverImageURL;
+    private byte[] coverImageURL;
+
+    @Column(name="book_addedAt")
+    private LocalDateTime createdAt;
+
+    @Column(name="book_updatedAt")
+    private LocalDateTime updatedAt;
 
     @ManyToMany
     @JoinTable(
@@ -56,4 +65,14 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings;
 
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt= LocalDateTime.now();
+        this.updatedAt= LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedAt= LocalDateTime.now();
+    }
 }

@@ -2,12 +2,15 @@ package com.example.consultadd_mini_project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
 @Data
+@ToString(exclude={"user","parentComment","review","book"})
+
+@Entity
 @Table(name="comment_table")
 public class Comment {
     @Id

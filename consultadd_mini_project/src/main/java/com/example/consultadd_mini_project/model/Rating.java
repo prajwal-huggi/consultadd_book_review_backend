@@ -2,11 +2,14 @@ package com.example.consultadd_mini_project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.UUID;
 
-@Entity
 @Data
+@ToString(exclude={"user","book"})
+
+@Entity
 @Table(name="rating_table")
 public class Rating {
     @Id
@@ -20,5 +23,9 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name="book_id")
+    private Book book;
 
 }

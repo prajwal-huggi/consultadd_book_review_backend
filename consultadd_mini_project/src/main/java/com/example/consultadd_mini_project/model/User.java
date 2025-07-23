@@ -2,6 +2,7 @@ package com.example.consultadd_mini_project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
+@ToString(exclude = {"followers", "following", "likedReviews", "dislikedReviews", "readingGoals", "bookLists"})
+
 @Entity
 @Table(name="user_table")
 public class User {

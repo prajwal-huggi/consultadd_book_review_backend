@@ -2,12 +2,15 @@ package com.example.consultadd_mini_project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
+@ToString(exclude= {"ratings","reviews","genres","authors"})
+
 @Entity
 @Table(name="book_table")
 public class Book {

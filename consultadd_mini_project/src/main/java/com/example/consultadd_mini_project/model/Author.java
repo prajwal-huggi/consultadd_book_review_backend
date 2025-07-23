@@ -3,12 +3,16 @@ package com.example.consultadd_mini_project.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
 @Data
+@ToString(exclude={"books"})
+
+@Entity
+@Table(name="author_table")
 public class Author {
     @Id
     @GeneratedValue

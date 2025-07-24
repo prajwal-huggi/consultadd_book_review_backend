@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@ToString(exclude={"books"})
+@ToString(exclude={"books", "imageURL"})
 
 @Entity
 @Table(name="author_table")
@@ -25,8 +25,12 @@ public class Author {
     @Column(name="author_bio", columnDefinition = "TEXT")
     private String bio;
 
+    @Column(name="author_email")
+    private String email;
+
+    @Lob
     @Column(name="author_image_url")
-    private String imageURL;
+    private byte[] imageURL;
 
     @ManyToMany(mappedBy = "authors")
     Set<Book> books;

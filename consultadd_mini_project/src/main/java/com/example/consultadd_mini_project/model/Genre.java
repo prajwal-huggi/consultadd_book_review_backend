@@ -11,7 +11,7 @@ import java.util.UUID;
 @ToString(exclude={"books"})
 
 @Entity
-@Table(name="genre_id")
+@Table(name="genre_table")
 public class Genre {
     @Id
     @GeneratedValue

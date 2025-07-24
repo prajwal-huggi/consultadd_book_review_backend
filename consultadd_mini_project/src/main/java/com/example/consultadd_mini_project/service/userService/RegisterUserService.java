@@ -18,13 +18,13 @@ public class RegisterUserService {
     @Autowired
     UserRepo repo;
 
-    private Boolean isValidEmail(String email){
-        if(email== null) return false;
-        System.out.println("Email in registerUserService is "+ email);
-        final String regex= "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        private Boolean isValidEmail(String email){
+            if(email== null) return false;
+            System.out.println("Email in registerUserService is "+ email);
+            final String regex= "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
-        return Pattern.matches(regex, email);
-    }
+            return Pattern.matches(regex, email);
+        }
 
     private Boolean isValidPassword(String password){
         if(password== null) return false;

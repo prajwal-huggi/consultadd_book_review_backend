@@ -71,7 +71,7 @@ public class BookController {
     }
 
     @GetMapping("/book/getBestSeller")
-    public ResponseEntity<ResponseDTO<List<Book>>> getBestSeller(){
+    public ResponseEntity<ResponseDTO<List<BookResponseDTO>>> getBestSeller(){
         return getBestSellerService.getBestSeller();
     }
 

@@ -4,61 +4,61 @@ import com.example.consultadd_mini_project.DTO.BookResponseDTO;
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.Repository.BookRepo;
 import com.example.consultadd_mini_project.model.Book;
-import com.example.consultadd_mini_project.model.Genre;
 import com.example.consultadd_mini_project.model.Rating;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class GetAllBookService {
-
+public class GetBookByIdService {
     @Autowired
-    private BookRepo repo;
+    BookRepo repo;
 
-    public ResponseEntity<ResponseDTO<List<BookResponseDTO>>> getAllBook(){
+    public ResponseEntity<ResponseDTO<BookResponseDTO>> getBookById(UUID id){
         try{
-            List<Book> allBooks = repo.findAll();
-//            List<Book> allBooks = repo.findAllWithRelations();
+            Optional<Book> book= repo.findById(id);
 
-            List<BookResponseDTO> bookDTOs = allBooks.stream().map(book -> {
-                double avgRating = book.getRatings().stream()
+            Optional<BookResponseDTO> bookResponseDTO= book.map(currentBook->{
+                double avgRating = currentBook.getRatings().stream()
                         .mapToInt(Rating::getValue)
                         .average()
                         .orElse(0.0);
 
                 return BookResponseDTO.builder()
-                        .id(book.getId())
-                        .title(book.getTitle())
-                        .summary(book.getSummary())
-                        .isbn(book.getIsbn())
-                        .coverImageUrl(book.getCoverImageURL())
-                        .publicationYear(book.getPublicationYear())
-                        .genres(book.getGenres().stream()
-                                .map(Genre::getName)
+                        .id(currentBook.getId())
+                        .title(currentBook.getTitle())
+                        .summary(currentBook.getSummary())
+                        .isbn(currentBook.getIsbn())
+                        .coverImageUrl(currentBook.getCoverImageURL())
+                        .publicationYear(currentBook.getPublicationYear())
+                        .genres(currentBook.getGenres().stream()
+                                .map(genre-> genre.getName())
                                 .collect(Collectors.toList()))
-                        .authors(book.getAuthors().stream()
+                        .authors(currentBook.getAuthors().stream()
                                 .map(author -> author.getEmail())
                                 .collect(Collectors.toList()))
-                        .ratings(book.getRatings().stream()
+                        .ratings(currentBook.getRatings().stream()
                                 .map(Rating::getValue)
                                 .collect(Collectors.toList()))
                         .averageRating(avgRating)
                         .build();
-            }).collect(Collectors.toList());
-
-            ResponseDTO<List<BookResponseDTO>> response = new ResponseDTO<>(200, "Fetched all books", bookDTOs);
+            });
+            ResponseDTO<BookResponseDTO> response;
+            if(bookResponseDTO.isPresent()){
+                response = new ResponseDTO<>(200, "Book is fetched", bookResponseDTO.get());
+            }else{
+                response = new ResponseDTO<>(400, "Book not found", null);
+            }
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }catch(Exception e){
-            ResponseDTO<List<BookResponseDTO>> response= new ResponseDTO<>(500, "Internal Server Error", null);
-
+            ResponseDTO<BookResponseDTO> response= new ResponseDTO<>(500, "Internal Server Error", null);
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }
-
     }
 }

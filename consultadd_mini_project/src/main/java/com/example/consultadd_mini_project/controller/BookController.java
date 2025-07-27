@@ -66,7 +66,7 @@ public class BookController {
     }
 
     @GetMapping("/book/getBookById")
-    public ResponseEntity<ResponseDTO<Book>> getBookById(@RequestParam("id") UUID id){
+    public ResponseEntity<ResponseDTO<BookResponseDTO>> getBookById(@RequestParam("id") UUID id){
         return getBookByIdService.getBookById(id);
     }
 

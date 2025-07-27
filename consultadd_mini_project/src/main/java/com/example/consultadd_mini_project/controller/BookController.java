@@ -66,7 +66,7 @@ public class BookController {
     }
 
     @GetMapping("/book/getBookById")
-    public ResponseEntity<ResponseDTO<Book>> getBookById(@RequestParam("id") UUID id){
+    public ResponseEntity<ResponseDTO<BookResponseDTO>> getBookById(@RequestParam("id") UUID id){
         return getBookByIdService.getBookById(id);
     }
 
@@ -76,7 +76,7 @@ public class BookController {
     }
 
     @GetMapping("/book/getRecommended")
-    public ResponseEntity<ResponseDTO<List<Book>>> getRecommendedBooks(){
+    public ResponseEntity<ResponseDTO<List<BookResponseDTO>>> getRecommendedBooks(){
         return getRecommendedBookService.getRecommendedBook();
     }
 }

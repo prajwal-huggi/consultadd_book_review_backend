@@ -61,7 +61,7 @@ public class BookController {
     }
 
     @GetMapping("/book/getNewlyAdded")
-    public ResponseEntity<ResponseDTO<List<Book>>> getNewlyAdded(){
+    public ResponseEntity<ResponseDTO<List<BookResponseDTO>>> getNewlyAdded(){
         return getNewlyAddedBooksService.getNewlyAddedBooks();
     }
 

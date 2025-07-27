@@ -1,8 +1,10 @@
 package com.example.consultadd_mini_project.service.bookService;
 
+import com.example.consultadd_mini_project.DTO.BookResponseDTO;
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.Repository.BookRepo;
 import com.example.consultadd_mini_project.model.Book;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,19 +15,51 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class GetNewlyAddedBooksService {
     @Autowired
     BookRepo repo;
 
-    public ResponseEntity<ResponseDTO<List<Book>>> getNewlyAddedBooks(){
+    public ResponseEntity<ResponseDTO<List<BookResponseDTO>>> getNewlyAddedBooks(){
         try{
             List<Book> getAllBooks= repo.findAll();
-            List<Book> getNewlyAddedBooks= getAllBooks.stream().sorted(Comparator.comparing(Book::getCreatedAt).reversed()).limit(12).collect(Collectors.toList());
+            List<Book> getNewlyAddedBooks= getAllBooks.stream()
+                    .sorted(Comparator
+                            .comparing(Book::getCreatedAt)
+                            .reversed())
+                    .limit(12)
+                    .collect(Collectors.toList());
 
-            ResponseDTO<List<Book>> response= new ResponseDTO<>(200, "Newly Added books fetched", getNewlyAddedBooks);
+            List<BookResponseDTO> bookDTOs= getNewlyAddedBooks.stream().map(book->{
+                double avgRating= book.getRatings().stream()
+                        .mapToInt(rating-> rating.getValue())
+                        .average()
+                        .orElse(0.0);
+
+                return BookResponseDTO.builder()
+                        .id(book.getId())
+                        .title(book.getTitle())
+                        .summary(book.getSummary())
+                        .isbn(book.getIsbn())
+                        .coverImageUrl(book.getCoverImageURL())
+                        .publicationYear(book.getPublicationYear())
+                        .genres(book.getGenres().stream()
+                                .map(genre-> genre.getName())
+                                .collect(Collectors.toList()))
+                        .authors(book.getAuthors().stream()
+                                .map(author-> author.getEmail())
+                                .collect(Collectors.toList()))
+                        .ratings(book.getRatings().stream()
+                                .map(rating-> rating.getValue())
+                                .collect(Collectors.toList()))
+                        .averageRating(avgRating)
+                        .build();
+            }).collect(Collectors.toList());
+
+            ResponseDTO<List<BookResponseDTO>> response= new ResponseDTO<>(200, "Newly Added books fetched", bookDTOs);
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }catch(Exception e){
-            ResponseDTO<List<Book>> response= new ResponseDTO<>(500, "Internal Server Error", null);
+            ResponseDTO<List<BookResponseDTO>> response= new ResponseDTO<>(500, "Internal Server Error", null);
 
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }

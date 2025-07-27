@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class LoginUserService {
 
@@ -31,8 +33,9 @@ public class LoginUserService {
 
             if(authentication.isAuthenticated()){
                 String generateToken= jwtService.generateToken(user.getEmail());
+                UUID userId= repo.findByEmail(user.getEmail()).getId();
 
-                LoginResponseDTO loginResponse= new LoginResponseDTO(generateToken, user.getEmail(),repo.findByEmail(user.getEmail()).getRole());
+                LoginResponseDTO loginResponse= new LoginResponseDTO(userId,generateToken, user.getEmail(),repo.findByEmail(user.getEmail()).getRole());
                 ResponseDTO<LoginResponseDTO> response= new ResponseDTO<>(200, "User Logged in!", loginResponse);
 
                 return ResponseEntity.status(response.getStatus_code()).body(response);

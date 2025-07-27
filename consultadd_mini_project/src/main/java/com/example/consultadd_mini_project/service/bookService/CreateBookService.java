@@ -7,16 +7,17 @@ import com.example.consultadd_mini_project.Repository.GenreRepo;
 import com.example.consultadd_mini_project.model.Author;
 import com.example.consultadd_mini_project.model.Book;
 import com.example.consultadd_mini_project.model.Genre;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CreateBookService {
     @Autowired
     private BookRepo bookRepo;
@@ -28,9 +29,10 @@ public class CreateBookService {
     private GenreRepo genreRepo;
 
     private Boolean isUniqueBook(String isbn){
-        Book findBook= bookRepo.findByIsbn(isbn);
+        Optional<Book> findBook= bookRepo.findByIsbn(isbn);
+        System.out.println(findBook);
 
-        return findBook== null;
+        return findBook.isEmpty();
     }
 
     public ResponseEntity<ResponseDTO<Object>> saveBook(String title, String summary, String isbn, MultipartFile coverImage, Set<UUID> authorIds, Integer publicationYear, Set<UUID> genreIds){
@@ -65,10 +67,11 @@ public class CreateBookService {
             book.setGenres(genres);
 
             Book saveBook= bookRepo.save(book);
-            ResponseDTO<Object> response= new ResponseDTO<>(200, "Book saved successfully", saveBook);
+            ResponseDTO<Object> response= new ResponseDTO<>(200, "Book saved successfully", book);
 
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }catch (Exception e){
+            e.printStackTrace();
             ResponseDTO<Object> response= new ResponseDTO<>(500, "Internal Server Error", null);
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }

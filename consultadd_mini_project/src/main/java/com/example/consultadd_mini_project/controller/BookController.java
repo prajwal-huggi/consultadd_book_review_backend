@@ -1,13 +1,11 @@
 package com.example.consultadd_mini_project.controller;
 
+import com.example.consultadd_mini_project.DTO.BookResponseDTO;
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.model.Author;
 import com.example.consultadd_mini_project.model.Book;
 import com.example.consultadd_mini_project.model.Genre;
-import com.example.consultadd_mini_project.service.bookService.CreateBookService;
-import com.example.consultadd_mini_project.service.bookService.GetBestSellerService;
-import com.example.consultadd_mini_project.service.bookService.GetNewlyAddedBooksService;
-import com.example.consultadd_mini_project.service.bookService.GetRecommendedBookService;
+import com.example.consultadd_mini_project.service.bookService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +29,12 @@ public class BookController {
     @Autowired
     GetNewlyAddedBooksService getNewlyAddedBooksService;
 
+    @Autowired
+    GetAllBookService getAllBookService;
+
+    @Autowired
+    GetBookByIdService getBookByIdService;
+
     @PostMapping("/book/create")
 //    @PreAuthorize(ADMIN)
     public ResponseEntity<ResponseDTO<Object>> addBook(
@@ -51,15 +55,26 @@ public class BookController {
 //    @DeleteMapping("/book/deleteBook")
 //    @PreAuthorize()
 
+    @GetMapping("/book/getAll")
+    public ResponseEntity<ResponseDTO<List<BookResponseDTO>>> getAllBooks(){
+        return getAllBookService.getAllBook();
+    }
 
     @GetMapping("/book/getNewlyAdded")
     public ResponseEntity<ResponseDTO<List<Book>>> getNewlyAdded(){
         return getNewlyAddedBooksService.getNewlyAddedBooks();
     }
+
+    @GetMapping("/book/getBookById")
+    public ResponseEntity<ResponseDTO<Book>> getBookById(@RequestParam("id") UUID id){
+        return getBookByIdService.getBookById(id);
+    }
+
     @GetMapping("/book/getBestSeller")
     public ResponseEntity<ResponseDTO<List<Book>>> getBestSeller(){
         return getBestSellerService.getBestSeller();
     }
+
     @GetMapping("/book/getRecommended")
     public ResponseEntity<ResponseDTO<List<Book>>> getRecommendedBooks(){
         return getRecommendedBookService.getRecommendedBook();

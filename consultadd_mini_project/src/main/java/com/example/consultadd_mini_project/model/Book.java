@@ -1,8 +1,8 @@
 package com.example.consultadd_mini_project.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @ToString(exclude= {"ratings","reviews","genres","authors"})
-
+@Builder
 @Entity
 @Table(name="book_table")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
     @Id
     @GeneratedValue

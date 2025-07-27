@@ -1,17 +1,20 @@
 package com.example.consultadd_mini_project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @ToString(exclude={"books"})
 
 @Entity
 @Table(name="genre_table")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Genre {
     @Id
     @GeneratedValue
@@ -25,5 +28,6 @@ public class Genre {
     private String description;
 
     @ManyToMany(mappedBy = "genres")
+    @JsonBackReference
     Set<Book> books;
 }

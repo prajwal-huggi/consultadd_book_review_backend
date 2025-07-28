@@ -1,14 +1,16 @@
 package com.example.consultadd_mini_project.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude={"user","parentComment","review","book"})
 
 @Entity

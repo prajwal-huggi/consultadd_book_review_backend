@@ -1,5 +1,6 @@
 package com.example.consultadd_mini_project.controller;
 
+import com.example.consultadd_mini_project.DTO.AuthorResponseDTO;
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.model.Author;
 import com.example.consultadd_mini_project.service.authorService.CreateAuthorService;
@@ -35,7 +36,7 @@ public class AuthorController {
     }
 
     @GetMapping("/author/getAll")
-    public ResponseEntity<ResponseDTO<List<Author>>> getAllAuthor(){
+    public ResponseEntity<ResponseDTO<List<AuthorResponseDTO>>> getAllAuthor(){
         return getAllAuthorService.getAllAuthor();
     }
 

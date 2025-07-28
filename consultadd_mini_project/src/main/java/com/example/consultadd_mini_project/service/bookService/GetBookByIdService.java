@@ -1,9 +1,11 @@
 package com.example.consultadd_mini_project.service.bookService;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.example.consultadd_mini_project.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,9 @@ public class GetBookByIdService {
 
             Optional<BookResponseDTO> bookResponseDTO= book.map(currentBook->{
                 double avgRating = currentBook.getReviews().stream()
-                        .mapToInt(review-> review.getValue())
+                        .map(Review::getValue)
+                        .filter(Objects::nonNull)
+                        .mapToInt(Integer::intValue)
                         .average()
                         .orElse(0.0);
 

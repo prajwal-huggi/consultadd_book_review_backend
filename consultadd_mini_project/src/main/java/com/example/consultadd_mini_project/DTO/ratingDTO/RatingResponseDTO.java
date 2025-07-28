@@ -1,4 +1,4 @@
-package com.example.consultadd_mini_project.DTO.RatingDTO;
+package com.example.consultadd_mini_project.DTO.ratingDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

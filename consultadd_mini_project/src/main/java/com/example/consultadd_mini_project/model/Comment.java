@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -26,6 +27,9 @@ public class Comment {
 
     @Column(name="comment_updatedAt")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> replies;
 
     @ManyToOne
     @JoinColumn(name="user_id")

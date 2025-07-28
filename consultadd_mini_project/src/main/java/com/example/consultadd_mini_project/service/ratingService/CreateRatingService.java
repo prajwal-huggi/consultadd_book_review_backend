@@ -1,7 +1,7 @@
 package com.example.consultadd_mini_project.service.ratingService;
 
-import com.example.consultadd_mini_project.DTO.RatingDTO.RatingRequestDTO;
-import com.example.consultadd_mini_project.DTO.RatingDTO.RatingResponseDTO;
+import com.example.consultadd_mini_project.DTO.ratingDTO.RatingRequestDTO;
+import com.example.consultadd_mini_project.DTO.ratingDTO.RatingResponseDTO;
 import com.example.consultadd_mini_project.DTO.ResponseDTO;
 import com.example.consultadd_mini_project.Repository.BookRepo;
 import com.example.consultadd_mini_project.Repository.RatingRepo;

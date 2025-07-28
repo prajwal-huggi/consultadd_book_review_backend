@@ -2,8 +2,10 @@ package com.example.consultadd_mini_project.service.bookService;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.example.consultadd_mini_project.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,9 @@ public class GetNewlyAddedBooksService {
 
             List<BookResponseDTO> bookDTOs= getNewlyAddedBooks.stream().map(book->{
                 double avgRating= book.getReviews().stream()
-                        .mapToInt(review-> review.getValue())
+                        .map(Review::getValue)
+                        .filter(Objects::nonNull)
+                        .mapToInt(Integer::intValue)
                         .average()
                         .orElse(0.0);
 

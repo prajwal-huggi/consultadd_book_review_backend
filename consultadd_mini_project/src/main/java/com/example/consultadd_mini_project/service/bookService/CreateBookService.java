@@ -67,7 +67,7 @@ public class CreateBookService {
             book.setGenres(genres);
 
             Book saveBook= bookRepo.save(book);
-            ResponseDTO<Object> response= new ResponseDTO<>(200, "Book saved successfully", book);
+            ResponseDTO<Object> response= new ResponseDTO<>(200, "Book saved successfully", null);
 
             return ResponseEntity.status(response.getStatus_code()).body(response);
         }catch (Exception e){

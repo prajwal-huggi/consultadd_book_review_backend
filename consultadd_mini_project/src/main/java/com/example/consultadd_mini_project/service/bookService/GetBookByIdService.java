@@ -1,18 +1,19 @@
 package com.example.consultadd_mini_project.service.bookService;
 
-import com.example.consultadd_mini_project.DTO.BookResponseDTO;
-import com.example.consultadd_mini_project.DTO.ResponseDTO;
-import com.example.consultadd_mini_project.Repository.BookRepo;
-import com.example.consultadd_mini_project.model.Book;
-import com.example.consultadd_mini_project.model.Rating;
-import jakarta.transaction.Transactional;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.example.consultadd_mini_project.DTO.BookResponseDTO;
+import com.example.consultadd_mini_project.DTO.ResponseDTO;
+import com.example.consultadd_mini_project.Repository.BookRepo;
+import com.example.consultadd_mini_project.model.Book;
+
+import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
@@ -25,8 +26,8 @@ public class GetBookByIdService {
             Optional<Book> book= repo.findById(id);
 
             Optional<BookResponseDTO> bookResponseDTO= book.map(currentBook->{
-                double avgRating = currentBook.getRatings().stream()
-                        .mapToInt(Rating::getValue)
+                double avgRating = currentBook.getReviews().stream()
+                        .mapToInt(review-> review.getValue())
                         .average()
                         .orElse(0.0);
 
@@ -43,9 +44,8 @@ public class GetBookByIdService {
                         .authors(currentBook.getAuthors().stream()
                                 .map(author -> author.getEmail())
                                 .collect(Collectors.toList()))
-                        .ratings(currentBook.getRatings().stream()
-                                .map(Rating::getValue)
-                                .collect(Collectors.toList()))
+                        .ratings(currentBook.getReviews().stream()
+                                .map(review-> review.getValue()).collect(Collectors.toList()))
                         .averageRating(avgRating)
                         .build();
             });

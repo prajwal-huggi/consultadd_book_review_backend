@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -54,6 +55,9 @@ public class Review {
             inverseJoinColumns=@JoinColumn(name="user_id")
     )
     private Set<User> dislikes;
+
+    @OneToMany(mappedBy="review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
     //Runs only once when the entity is created
     @PrePersist
